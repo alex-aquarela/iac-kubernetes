@@ -13,7 +13,7 @@ terraform {
   }
 }
 
-/* Variables for Access */
+/* Variáveis de autenticação */
 provider "azurerm" {
   features {}
 

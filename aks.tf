@@ -1,34 +1,34 @@
-resource "azurerm_resource_group" "rg_aks_tf" {
-  name     = "rg_aks_tf"
-  location = var.resource_group_location
+resource "azurerm_resource_group" "alex-labs" {
+  name     = var.resource_group.name
+  location = var.resource_group.location
 }
 
-resource "azurerm_storage_account" "aks_tf_storage_account" {
-  name                     = "aks_tf_storage_account"
-  resource_group_name      = azurerm_resource_group.rg_aks_tf.name
-  location                 = azurerm_resource_group.rg_aks_tf.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
+resource "azurerm_storage_account" "alexlabsstorageaccount" {
+  name                     = var.storage_account.name
+  location                 = var.storage_account.location
+  account_tier             = var.storage_account.account_tier
+  account_replication_type = var.storage_account.account_replication_type
+  resource_group_name      = var.resource_group.name
 }
 
 resource "azurerm_kubernetes_cluster" "aks_tf" {
   name                = "aks_tf"
-  location            = azurerm_resource_group.rg_aks_tf.location
-  resource_group_name = azurerm_resource_group.rg_aks_tf.name
+  location            = var.resource_group.location
+  resource_group_name = var.resource_group.name
   dns_prefix          = "aks"
 
   default_node_pool {
-    name       = var.default_node_pool_name
-    node_count = var.node_count
-    vm_size    = var.vm_size
+    name       = var.default_node_pool.name
+    node_count = var.default_node_pool.node_count
+    vm_size    = var.default_node_pool.vm_size
   }
   
   identity {
-    type = var.aks_identity
+    type = var.identity
   }
 
   network_profile {
-    network_plugin    = var.network_plugin
-    load_balancer_sku = var.load_balancer_sku
+    network_plugin    = var.network_profile.network_plugin
+    load_balancer_sku = var.network_profile.load_balancer_sku
   }
 }
